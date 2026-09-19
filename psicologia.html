@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Psicología | Policlínica Familiar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --accent: #9B6BD6;
+            --accent-soft: #F4EDFB;
+            --accent-dark: #6E44A8;
+        }
+
+        * { -webkit-tap-highlight-color: transparent; }
+
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        h1, h2, h3, h4 { font-family: 'Montserrat', sans-serif; }
+
+        /* ============ HERO ============ */
+        .hero {
+            position: relative;
+            overflow: hidden;
+            background:
+                radial-gradient(circle at 88% 15%, rgba(255,255,255,.16) 0%, transparent 55%),
+                radial-gradient(circle at 8% 92%, rgba(255,255,255,.10) 0%, transparent 50%),
+                linear-gradient(135deg, #52307F 0%, var(--accent) 55%, #C9A8F0 100%);
+        }
+        .hero::after {
+            content: "";
+            position: absolute; inset: 0;
+            background-image: repeating-linear-gradient(45deg, rgba(255,255,255,.05) 0 1px, transparent 1px 16px);
+            opacity: .55; pointer-events: none;
+        }
+        .hero-content { position: relative; z-index: 2; }
+
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: .5rem;
+            background: rgba(255,255,255,.18);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,.3);
+            color: #fff; font-size: 10px; font-weight: 700;
+            letter-spacing: .16em; text-transform: uppercase;
+            padding: .45rem .9rem; border-radius: 999px;
+        }
+
+        .hero-chip {
+            display: inline-flex; align-items: center; gap: .45rem;
+            font-size: 11px; font-weight: 600; color: rgba(255,255,255,.95);
+            background: rgba(255,255,255,.14);
+            border: 1px solid rgba(255,255,255,.24);
+            padding: .4rem .8rem; border-radius: 999px;
+            backdrop-filter: blur(6px);
+        }
+
+        .hero-icon-wrap {
+            background: rgba(255,255,255,.16);
+            backdrop-filter: blur(12px);
+            border: 2px solid rgba(255,255,255,.4);
+            border-radius: 1.6rem;
+            padding: .6rem;
+            box-shadow: 0 22px 48px -22px rgba(0,0,0,.5);
+            transition: transform .5s cubic-bezier(.4,0,.2,1);
+        }
+        .hero-icon-wrap:hover { transform: translateY(-5px) rotate(-2deg); }
+
+        /* ============ TARJETAS INTERACTIVAS ============ */
+        .service-card {
+            position: relative;
+            background: #ffffff;
+            border: 1px solid #eef1f5;
+            border-radius: 1.5rem;
+            padding: 1.5rem 1.4rem 1.4rem;
+            cursor: pointer;
+            overflow: hidden;
+            isolation: isolate;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            text-align: left;
+            transition: transform .38s cubic-bezier(.4,0,.2,1),
+                        box-shadow .38s ease,
+                        border-color .38s ease;
+            animation: fadeUp .6s cubic-bezier(.4,0,.2,1) both;
+            min-height: 320px;
+        }
+
+        .service-card::before {
+            content: "";
+            position: absolute; top: -70px; right: -70px;
+            width: 210px; height: 210px; border-radius: 50%;
+            background: radial-gradient(circle, var(--card-soft) 0%, transparent 70%);
+            z-index: -1;
+            transition: transform .6s cubic-bezier(.4,0,.2,1);
+        }
+        .service-card::after {
+            content: "";
+            position: absolute; left: 0; bottom: 0;
+            height: 4px; width: 100%;
+            background: linear-gradient(90deg, var(--card-accent) 0%, var(--card-accent) 60%, transparent 100%);
+            transform: scaleX(0); transform-origin: left;
+            transition: transform .5s cubic-bezier(.4,0,.2,1);
+        }
+
+        .service-card:hover,
+        .service-card:focus-visible {
+            transform: translateY(-8px);
+            border-color: var(--card-accent);
+            box-shadow: 0 28px 48px -26px var(--card-accent),
+                        0 6px 18px -10px rgba(15,23,42,.08);
+            outline: none;
+        }
+        .service-card:hover::before { transform: scale(1.4); }
+        .service-card:hover::after  { transform: scaleX(1); }
+
+        .card-head {
+            display: flex; align-items: center; justify-content: space-between;
+            gap: .75rem;
+        }
+
+        .card-icon {
+            width: 48px; height: 48px;
+            border-radius: 1rem;
+            display: flex; align-items: center; justify-content: center;
+            background: var(--card-soft);
+            color: var(--card-accent);
+            font-size: 1.2rem;
+            box-shadow: 0 0 0 4px var(--card-soft);
+            transition: transform .4s cubic-bezier(.4,0,.2,1), box-shadow .4s ease;
+            flex-shrink: 0;
+        }
+        .service-card:hover .card-icon {
+            transform: scale(1.08) rotate(-4deg);
+            box-shadow: 0 0 0 6px var(--card-soft);
+        }
+
+        .card-count {
+            font-size: 10px; font-weight: 700;
+            letter-spacing: .08em; text-transform: uppercase;
+            color: var(--card-accent);
+            background: var(--card-soft);
+            padding: .3rem .65rem;
+            border-radius: 999px;
+            white-space: nowrap;
+        }
+
+        .card-title {
+            font-weight: 800;
+            font-size: 1.02rem;
+            line-height: 1.3;
+            color: #1e293b;
+            letter-spacing: -.01em;
+            transition: color .3s ease;
+        }
+        .service-card:hover .card-title { color: var(--card-accent); }
+
+        .card-teaser {
+            font-size: .8rem;
+            line-height: 1.55;
+            color: #7c8798;
+            margin-top: -.4rem;
+        }
+
+        .card-preview {
+            list-style: none; padding: 0; margin: 0;
+            display: flex; flex-direction: column; gap: .55rem;
+            flex: 1;
+        }
+        .card-preview li {
+            display: flex; align-items: flex-start; gap: .55rem;
+            font-size: .78rem;
+            line-height: 1.5;
+            color: #5b6675;
+        }
+        .card-preview li .dot {
+            flex-shrink: 0;
+            width: 6px; height: 6px;
+            border-radius: 999px;
+            background: var(--card-accent);
+            margin-top: .5rem;
+        }
+
+        .card-more {
+            font-size: .72rem;
+            font-weight: 700;
+            color: var(--card-accent);
+            letter-spacing: .02em;
+            margin-top: -.2rem;
+        }
+
+        .card-cta {
+            display: flex; align-items: center; justify-content: space-between;
+            gap: .5rem;
+            padding-top: .9rem;
+            border-top: 1px dashed #e8edf3;
+            font-size: .76rem;
+            font-weight: 700;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            color: var(--card-accent);
+        }
+        .card-cta i { transition: transform .35s cubic-bezier(.4,0,.2,1); }
+        .service-card:hover .card-cta i { transform: translateX(6px); }
+
+        /* ============ MODAL ============ */
+        .modal-backdrop {
+            position: fixed; inset: 0;
+            background: rgba(15, 23, 42, .58);
+            backdrop-filter: blur(8px);
+            z-index: 100;
+            display: flex; align-items: center; justify-content: center;
+            padding: 1rem;
+            opacity: 0; pointer-events: none;
+            transition: opacity .3s ease;
+        }
+        .modal-backdrop.active { opacity: 1; pointer-events: auto; }
+
+        .modal-panel {
+            background: #fff;
+            border-radius: 1.6rem;
+            max-width: 44rem; width: 100%;
+            max-height: 90vh;
+            display: flex; flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 40px 90px -25px rgba(15,23,42,.5),
+                        0 0 0 1px rgba(255,255,255,.05);
+            transform: scale(.94) translateY(14px);
+            transition: transform .4s cubic-bezier(.4,0,.2,1);
+        }
+        .modal-backdrop.active .modal-panel { transform: scale(1) translateY(0); }
+
+        .modal-header {
+            position: relative;
+            padding: 1.5rem 1.6rem;
+            background: linear-gradient(135deg, var(--m-accent-dark) 0%, var(--m-accent) 100%);
+            color: #fff;
+            display: flex; align-items: center; gap: 1rem;
+            overflow: hidden;
+        }
+        .modal-header::after {
+            content: "";
+            position: absolute; top: -50px; right: -50px;
+            width: 180px; height: 180px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,255,255,.18) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .modal-icon {
+            width: 54px; height: 54px; flex-shrink: 0;
+            border-radius: 1rem;
+            background: rgba(255,255,255,.22);
+            border: 1.5px solid rgba(255,255,255,.35);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.4rem;
+            backdrop-filter: blur(6px);
+            z-index: 2;
+        }
+
+        .modal-title-block { flex: 1; z-index: 2; min-width: 0; }
+        .modal-eyebrow {
+            font-size: 10px; font-weight: 700;
+            letter-spacing: .16em; text-transform: uppercase;
+            color: rgba(255,255,255,.8);
+        }
+        .modal-title {
+            font-size: 1.35rem; font-weight: 800;
+            line-height: 1.25; margin-top: .15rem;
+            letter-spacing: -.01em;
+        }
+
+        .modal-close {
+            z-index: 2;
+            width: 38px; height: 38px; flex-shrink: 0;
+            border-radius: 999px;
+            background: rgba(255,255,255,.18);
+            border: 1.5px solid rgba(255,255,255,.3);
+            color: #fff;
+            display: flex; align-items: center; justify-content: center;
+            font-size: .95rem;
+            cursor: pointer;
+            transition: background .25s ease, transform .3s ease;
+        }
+        .modal-close:hover { background: rgba(255,255,255,.32); transform: rotate(90deg); }
+
+        .modal-body {
+            padding: 1.6rem 1.7rem 1.8rem;
+            overflow-y: auto;
+            color: #334155;
+        }
+        .modal-body::-webkit-scrollbar { width: 8px; }
+        .modal-body::-webkit-scrollbar-track { background: #f1f5f9; }
+        .modal-body::-webkit-scrollbar-thumb {
+            background: var(--m-soft); border-radius: 99px;
+            border: 2px solid #f1f5f9;
+        }
+        .modal-body::-webkit-scrollbar-thumb:hover { background: var(--m-accent); }
+
+        /* Bloques dentro de la modal */
+        .m-group { margin-bottom: 1.6rem; }
+        .m-group:last-child { margin-bottom: .4rem; }
+
+        .m-group-title {
+            display: flex; align-items: center; gap: .6rem;
+            font-size: .72rem; font-weight: 800;
+            letter-spacing: .1em; text-transform: uppercase;
+            color: var(--m-accent-dark);
+            padding-bottom: .55rem;
+            margin-bottom: .85rem;
+            border-bottom: 1.5px solid var(--m-soft);
+        }
+        .m-group-title .bar {
+            width: 4px; height: 14px;
+            border-radius: 4px;
+            background: var(--m-accent);
+        }
+
+        .m-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: .55rem; }
+        .m-item {
+            display: flex; align-items: flex-start; gap: .65rem;
+            font-size: .875rem; line-height: 1.6; color: #475569;
+            padding: .5rem .75rem;
+            border-radius: .75rem;
+            background: #f8fafc;
+            transition: background .25s ease, transform .25s ease;
+        }
+        .m-item:hover { background: var(--m-soft); transform: translateX(3px); }
+        .m-item i {
+            color: var(--m-accent);
+            font-size: .7rem;
+            margin-top: .45rem;
+            flex-shrink: 0;
+        }
+
+        .m-sub {
+            background: var(--m-soft);
+            border-left: 3px solid var(--m-accent);
+            border-radius: .85rem;
+            padding: .85rem 1rem;
+            margin: .35rem 0;
+        }
+        .m-sub .m-sub-label {
+            font-size: .68rem; font-weight: 800;
+            letter-spacing: .08em; text-transform: uppercase;
+            color: var(--m-accent-dark);
+            display: inline-block;
+            margin-bottom: .35rem;
+        }
+        .m-sub .m-sub-line {
+            display: block;
+            font-size: .82rem;
+            line-height: 1.65;
+            color: #475569;
+            padding-left: .9rem;
+            position: relative;
+        }
+        .m-sub .m-sub-line::before {
+            content: "";
+            position: absolute; left: 0; top: .7em;
+            width: 5px; height: 5px; border-radius: 99px;
+            background: var(--m-accent);
+        }
+
+        .m-note {
+            font-size: .82rem; color: #64748b;
+            line-height: 1.7; margin-top: .5rem;
+        }
+
+        /* ============ BOTÓN REGRESAR ============ */
+        .back-btn {
+            display: inline-flex; align-items: center; gap: .6rem;
+            padding: .75rem 1.4rem;
+            background: #0f172a; color: #fff;
+            border-radius: .9rem;
+            font-size: .82rem; font-weight: 700;
+            transition: background .3s ease, transform .3s ease, gap .3s ease;
+            text-decoration: none;
+        }
+        .back-btn:hover { background: var(--accent); gap: .85rem; }
+        .back-btn i { transition: transform .3s ease; }
+        .back-btn:hover i { transform: translateX(-4px); }
+
+        /* ============ ANIMACIONES ============ */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .service-card:nth-child(1) { animation-delay: .05s; }
+        .service-card:nth-child(2) { animation-delay: .12s; }
+        .service-card:nth-child(3) { animation-delay: .19s; }
+        .service-card:nth-child(4) { animation-delay: .26s; }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .service-card { min-height: auto; padding: 1.35rem 1.25rem; }
+            .modal-panel { max-height: 94vh; border-radius: 1.3rem; }
+            .modal-header { padding: 1.25rem 1.25rem; gap: .8rem; }
+            .modal-icon { width: 46px; height: 46px; font-size: 1.15rem; }
+            .modal-title { font-size: 1.12rem; }
+            .modal-body { padding: 1.35rem 1.25rem 1.5rem; }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Navegación Superior Inmóvil (Sticky) -->
+    <nav class="bg-white/90 backdrop-blur border-b border-slate-100 p-4 px-8 flex justify-between items-center shadow-sm sticky top-0 z-50">
+        <div class="flex items-center gap-3">
+            <img src="logo.png" alt="Logo" class="h-10">
+            <span class="font-bold text-slate-800 tracking-tighter text-lg">POLICLÍNICA FAMILIAR</span>
+        </div>
+        <div class="hidden md:flex gap-6 text-sm font-semibold text-slate-600">
+            <a href="index.html" class="hover:text-emerald-600 transition-colors">Inicio</a>
+            <a href="especialidades.html" class="text-emerald-600 border-b-2 border-emerald-500 pb-1">Especialidades</a>
+            <a href="servicios.html" class="hover:text-emerald-600 transition-colors">Servicios</a>
+            <a href="contacto.html" class="hover:text-emerald-600 transition-colors">Contacto</a>
+        </div>
+    </nav>
+
+    <!-- Contenido Principal -->
+    <main class="flex-grow max-w-7xl mx-auto p-6 lg:p-10 w-full">
+
+        <!-- HERO -->
+        <section class="hero rounded-3xl shadow-xl mb-10 p-8 lg:p-10">
+            <div class="hero-content flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+                <div class="max-w-2xl">
+                    <span class="hero-badge">
+                        <i class="fa-solid fa-brain"></i>
+                        Especialidad Médica
+                    </span>
+                    <h1 class="text-3xl lg:text-5xl font-extrabold text-white mt-4 leading-tight tracking-tight">
+                        Área de <span class="text-purple-100">Psicología</span>
+                    </h1>
+                    <p class="text-purple-50/90 text-sm lg:text-base mt-3 leading-relaxed max-w-xl">
+                        Apoyo emocional y salud mental para toda la familia: psicoterapia,
+                        evaluaciones psicodiagnósticas, talleres de habilidades y programas
+                        de acompañamiento especializado.
+                    </p>
+                    <div class="flex flex-wrap gap-3 mt-6">
+                        <span class="hero-chip"><i class="fa-solid fa-comments text-purple-100"></i> Psicoterapia</span>
+                        <span class="hero-chip"><i class="fa-solid fa-clipboard-check text-purple-100"></i> Evaluaciones</span>
+                        <span class="hero-chip"><i class="fa-solid fa-people-group text-purple-100"></i> Talleres y programas</span>
+                    </div>
+                </div>
+                <div class="hero-icon-wrap shrink-0 self-center md:self-auto">
+                    <img src="Imagen9.jpg" alt="Psicología"
+                         class="w-24 h-24 lg:w-28 lg:h-28 object-cover rounded-2xl bg-white">
+                </div>
+            </div>
+        </section>
+
+        <!-- Instrucción de uso -->
+        <div class="mb-6 flex items-center gap-2 text-sm text-slate-500">
+            <i class="fa-solid fa-hand-pointer text-[var(--accent)]"></i>
+            <span>Toca cualquier tarjeta para ver la información completa de cada área.</span>
+        </div>
+
+        <!-- Grid de tarjetas interactivas -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+            <!-- Card 1: Consulta Externa -->
+            <article class="service-card"
+                     data-modal="consulta"
+                     style="--card-accent:#9B6BD6; --card-soft:#F4EDFB;"
+                     tabindex="0" role="button"
+                     aria-label="Ver detalles de Consulta Externa de Psicología">
+                <div class="card-head">
+                    <div class="card-icon"><i class="fa-solid fa-comments"></i></div>
+                    <span class="card-count">6 servicios</span>
+                </div>
+                <h3 class="card-title">Consulta Externa</h3>
+                <p class="card-teaser">Psicoterapia y evaluaciones psicológicas para niños, adolescentes y adultos.</p>
+                <ul class="card-preview">
+                    <li><span class="dot"></span><span>Psicoterapia Individual</span></li>
+                    <li><span class="dot"></span><span>Terapia de Pareja y Familiar</span></li>
+                    <li><span class="dot"></span><span>Evaluaciones Psicodiagnósticas</span></li>
+                </ul>
+                <span class="card-more">+ 3 servicios más</span>
+                <div class="card-cta">
+                    <span>Ver todos los detalles</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </div>
+            </article>
+
+            <!-- Card 2: Programas y Talleres -->
+            <article class="service-card"
+                     data-modal="programas"
+                     style="--card-accent:#008E9F; --card-soft:#E5F4F6;"
+                     tabindex="0" role="button"
+                     aria-label="Ver detalles de Programas y Talleres">
+                <div class="card-head">
+                    <div class="card-icon"><i class="fa-solid fa-people-group"></i></div>
+                    <span class="card-count">5 programas</span>
+                </div>
+                <h3 class="card-title">Programas y Talleres</h3>
+                <p class="card-teaser">Intervenciones grupales y organizacionales para el desarrollo humano.</p>
+                <ul class="card-preview">
+                    <li><span class="dot"></span><span>Talleres de Habilidades Blandas</span></li>
+                    <li><span class="dot"></span><span>Riesgos Psicocognitivos y Burnout</span></li>
+                    <li><span class="dot"></span><span>Clima y Cultura Organizacional</span></li>
+                </ul>
+                <span class="card-more">+ 2 programas más</span>
+                <div class="card-cta">
+                    <span>Ver todos los detalles</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </div>
+            </article>
+
+            <!-- Card 3: Interconsultas -->
+            <article class="service-card"
+                     data-modal="interconsultas"
+                     style="--card-accent:#F49020; --card-soft:#FEF3E6;"
+                     tabindex="0" role="button"
+                     aria-label="Ver detalles de Interconsultas">
+                <div class="card-head">
+                    <div class="card-icon"><i class="fa-solid fa-user-doctor"></i></div>
+                    <span class="card-count">1 área</span>
+                </div>
+                <h3 class="card-title">Interconsultas</h3>
+                <p class="card-teaser">Coordinación directa con Psiquiatría para casos que requieren manejo conjunto.</p>
+                <ul class="card-preview">
+                    <li><span class="dot"></span><span>Interconsulta con Psiquiatría</span></li>
+                    <li><span class="dot"></span><span>Evaluación y seguimiento conjunto</span></li>
+                    <li><span class="dot"></span><span>Referencia oportuna según el caso</span></li>
+                </ul>
+                <div class="card-cta">
+                    <span>Ver todos los detalles</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </div>
+            </article>
+
+            <!-- Card 4: Laboratorios / Estudios -->
+            <article class="service-card"
+                     data-modal="estudios"
+                     style="--card-accent:#B22625; --card-soft:#FCEDEB;"
+                     tabindex="0" role="button"
+                     aria-label="Ver detalles de Laboratorios y Estudios">
+                <div class="card-head">
+                    <div class="card-icon"><i class="fa-solid fa-clipboard-list"></i></div>
+                    <span class="card-count">Tests</span>
+                </div>
+                <h3 class="card-title">Laboratorios / Estudios</h3>
+                <p class="card-teaser">Pruebas y test psicométricos para apoyo diagnóstico y seguimiento.</p>
+                <ul class="card-preview">
+                    <li><span class="dot"></span><span>Test Psicomotriz</span></li>
+                    <li><span class="dot"></span><span>Test de personalidad</span></li>
+                    <li><span class="dot"></span><span>Evaluación cognitiva</span></li>
+                </ul>
+                <span class="card-more">+ otros test más</span>
+                <div class="card-cta">
+                    <span>Ver todos los detalles</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </div>
+            </article>
+
+        </div>
+
+        <!-- Botón Regresar -->
+        <div class="mt-12 flex flex-col sm:flex-row justify-between items-center gap-4 bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
+            <a href="especialidades.html" class="back-btn">
+                <i class="fa-solid fa-arrow-left"></i>
+                Regresar a Especialidades
+            </a>
+            <span class="text-xs text-slate-400 font-medium tracking-wide">
+                Policlínica Familiar · Psicología
+            </span>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="p-6 text-center border-t bg-white mt-auto">
+        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">
+            © 2026 Policlínica Familiar | Eficacia médica con calidez humana
+        </p>
+    </footer>
+
+    <!-- ============ MODAL ============ -->
+    <div id="modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modal-panel" style="--m-accent:#9B6BD6; --m-soft:#F4EDFB; --m-accent-dark:#6E44A8;">
+            <div class="modal-header">
+                <div class="modal-icon" id="modalIcon"><i class="fa-solid fa-brain"></i></div>
+                <div class="modal-title-block">
+                    <span class="modal-eyebrow" id="modalEyebrow">Psicología</span>
+                    <h2 class="modal-title" id="modalTitle">Título</h2>
+                </div>
+                <button class="modal-close" id="modalClose" aria-label="Cerrar">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="modalBody"><!-- contenido dinámico --></div>
+        </div>
+    </div>
+
+    <script>
+        // ============ DATOS DE CADA MODAL ============
+        const DATA = {
+            consulta: {
+                eyebrow: 'Consulta Externa',
+                title:   'Psicoterapia y evaluaciones',
+                icon:    'fa-comments',
+                accent:  '#9B6BD6',
+                soft:    '#F4EDFB',
+                dark:    '#6E44A8',
+                body: `
+                    <div class="m-group">
+                        <div class="m-group-title"><span class="bar"></span>Psicoterapia</div>
+                        <ul class="m-list">
+                            <li class="m-item"><i class="fa-solid fa-check"></i><span><strong>Psicoterapia Individual</strong> · acompañamiento emocional personalizado</span></li>
+                            <li class="m-item"><i class="fa-solid fa-check"></i><span><strong>Terapia de Pareja y Familiar</strong> · fortalecimiento de vínculos y comunicación</span></li>
+                        </ul>
+                    </div>
+
+                    <div class="m-group">
+                        <div class="m-group-title"><span class="bar"></span>Evaluaciones clínicas</div>
+                        <ul class="m-list">
+                            <li class="m-item"><i class="fa-solid fa-check"></i><span><strong>Evaluaciones Psicodiagnósticas</strong> · perfil psicológico integral</span></li>
+                            <li class="m-item"><i class="fa-solid fa-check"></i><span><strong>Evaluación Neuropsicológica y Cognitiva</strong> · funciones cerebrales superiores</span></li>
+                            <li class="m-item"><i class="fa-solid fa-check"></i><span><strong>Evaluación e Intervención en Problemas de Aprendizaje</strong> · apoyo escolar especializado</span></li>
+                        </ul>
+                    </div>
+
+                    <div class="m-group">
+                        <div class="m-group-title"><span class="bar"></span>Orientación</div>
+                        <div class="m-sub">
+                            <span class="m-sub-label">Orientación Vocacional</span>
+                            <span class="m-sub-line">Descubrimiento de intereses y aptitudes</span>
+                            <span class="m-sub-line">Acompañamiento en la elección profesional</span>
+                        </div>
+                    </div>
+
+                    <p class="m-note">
+                        Cada proceso se adapta a las necesidades del paciente, con un enfoque
+                        integral y confidencial que respeta su ritmo y contexto.
+                    </p>
+                `
+            },
+
+            programas: {
+                eyebrow: 'Programas y Talleres',
+                title:   'Intervenciones grupales',
+                icon:    'fa-people-group',
+                accent:  '#008E9F',
+                soft:    '#E5F4F6',
+                dark:    '#006D7A',
+                body: `
+                    <div class="m-group">
+                        <div class="m-group-title"><span class="bar"></span>Desarrollo personal y profesional</div>
+                        <ul class="m-list">
+                            <li class="m-item"><i class="fa-solid fa-check"></i><span><strong>Talleres de Habilidades Blandas</strong> · comunicación, liderazgo y trabajo en equipo</span></li>
+                            <li class="m-item"><i class="fa-solid fa-check"></i><span><strong>Evaluación de Riesgos Psicocognitivos y Burnout</strong> · prevención del agotamiento laboral</span></li>
+                        </ul>
+                    </div>
+
+                    <div class="m-group">
+                        <div class="m-group-title"><span class="bar"></span>Organizaciones</div>
+                        <ul class="m-list">
+                            <li class="m-item"><i class="fa-solid fa-check"></i><span><strong>Estudios de Clima y Cultura Organizacional</strong> · diagnóstico e intervención en empresas</span></li>
+                        </ul>
+                    </div>
+
+                    <div class="m-group">
+                        <div class="m-group-title"><span class="bar"></span>Programas sociales</div>
+                        <div class="m-sub">
+                            <span class="m-sub-label">Acompañamiento especializado</span>
+                            <span class="m-sub-line">Atención y acompañamiento a víctimas de violencia</span>
+                            <span class="m-sub-line">Asesoría de inclusión escolar</span>
+                        </div>
+                    </div>
+
+                    <p class="m-note">
+                        Los programas se diseñan a medida según las necesidades de cada grupo,
+                        institución o empresa, con seguimiento y reportes de resultados.
+                    </p>
+                `
+            },
+
+            interconsultas: {
+                eyebrow: 'Interconsultas',
+                title:   'Coordinación con Psiquiatría',
+                icon:    'fa-user-doctor',
+                accent:  '#F49020',
+                soft:    '#FEF3E6',
+                dark:    '#C56A0E',
+                body: `
+                    <div class="m-group">
+                        <div class="m-group-title"><span class="bar"></span>Psiquiatría</div>
+                        <ul class="m-list">
+                            <li class="m-item"><i class="fa-solid fa-check"></i><span><strong>Interconsulta con Psiquiatría</strong> · manejo conjunto de casos que lo requieren</span></li>
+                            <li class="m-item"><i class="fa-solid fa-check"></i><span><strong>Evaluación y seguimiento conjunto</strong> · psicoterapia + tratamiento farmacológico cuando aplica</span></li>
+                            <li class="m-item"><i class="fa-solid fa-check"></i><span><strong>Referencia oportuna</strong> · según la complejidad del caso</span></li>
+                        </ul>
+                    </div>
+
+                    <p class="m-note">
+                        Trabajamos de manera coordinada con el servicio de Psiquiatría para
+                        garantizar un abordaje integral y continuo de la salud mental del paciente.
+                    </p>
+                `
+            },
+
+            estudios: {
+                eyebrow: 'Laboratorios / Estudios',
+                title:   'Pruebas y test psicométricos',
+                icon:    'fa-clipboard-list',
+                accent:  '#B22625',
+                soft:    '#FCEDEB',
+                dark:    '#8C1D1C',
+                body: `
+                    <div class="m-group">
+                        <div class="m-group-title"><span class="bar"></span>Test psicométricos</div>
+                        <ul class="m-list">
+                            <li class="m-item"><i class="fa-solid fa-check"></i><span>Test Psicomotriz</span></li>
+                            <li class="m-item"><i class="fa-solid fa-check"></i><span>Test de personalidad</span></li>
+                            <li class="m-item"><i class="fa-solid fa-check"></i><span>Test de inteligencia emocional</span></li>
+                            <li class="m-item"><i class="fa-solid fa-check"></i><span>Test proyectivos</span></li>
+                        </ul>
+                    </div>
+
+                    <div class="m-group">
+                        <div class="m-group-title"><span class="bar"></span>Evaluaciones específicas</div>
+                        <div class="m-sub">
+                            <span class="m-sub-label">Según la necesidad clínica</span>
+                            <span class="m-sub-line">Evaluación cognitiva y neuropsicológica</span>
+                            <span class="m-sub-line">Evaluación de aprendizaje</span>
+                            <span class="m-sub-line">Evaluación vocacional</span>
+                            <span class="m-sub-line">Escalas de ansiedad, depresión y estrés</span>
+                        </div>
+                    </div>
+
+                    <p class="m-note">
+                        Los test se aplican y se interpretan por profesionales de la salud mental
+                        capacitados, y se integran al expediente clínico del paciente para un
+                        seguimiento adecuado.
+                    </p>
+                `
+            }
+        };
+
+        // ============ REFERENCIAS ============
+        const modal        = document.getElementById('modal');
+        const modalPanel   = modal.querySelector('.modal-panel');
+        const modalIcon    = document.getElementById('modalIcon');
+        const modalEyebrow = document.getElementById('modalEyebrow');
+        const modalTitle   = document.getElementById('modalTitle');
+        const modalBody    = document.getElementById('modalBody');
+        const modalClose   = document.getElementById('modalClose');
+
+        let lastFocused = null;
+
+        // ============ ABRIR MODAL ============
+        function openModal(key) {
+            const d = DATA[key];
+            if (!d) return;
+
+            lastFocused = document.activeElement;
+
+            modalIcon.innerHTML      = `<i class="fa-solid ${d.icon}"></i>`;
+            modalEyebrow.textContent = d.eyebrow;
+            modalTitle.textContent   = d.title;
+            modalBody.innerHTML      = d.body;
+
+            modalPanel.style.setProperty('--m-accent', d.accent);
+            modalPanel.style.setProperty('--m-soft', d.soft);
+            modalPanel.style.setProperty('--m-accent-dark', d.dark);
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            setTimeout(() => modalClose.focus(), 100);
+        }
+
+        // ============ CERRAR MODAL ============
+        function closeModal() {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+            if (lastFocused) lastFocused.focus();
+        }
+
+        // ============ EVENTOS DE TARJETAS ============
+        document.querySelectorAll('.service-card').forEach(card => {
+            card.addEventListener('click', () => openModal(card.dataset.modal));
+
+            card.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    openModal(card.dataset.modal);
+                }
+            });
+        });
+
+        // ============ CIERRE DEL MODAL ============
+        modalClose.addEventListener('click', closeModal);
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.classList.contains('active')) {
+                closeModal();
+            }
+        });
+    </script>
+
+</body>
+</html>

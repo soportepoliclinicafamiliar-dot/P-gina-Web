@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Policlinica Familiar</title>
+    <!-- Librería QRious -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+    <style>
+        :root {
+            --bg-page: #91CEAA;
+            --bg-card: #FFFFFF;
+            --primary: #34B78F;
+            --primary-hover: #2a9573;
+            --success: #7BCEE0;
+            --success-hover: #5cbcd0;
+            --neutral: #FAB543;
+            --neutral-hover: #e09f30;
+            --text: #B22625;
+            --border: #7BCEE0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+
+        body {
+            background-color: var(--bg-page);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(178, 38, 37, 0.15);
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+            border: 3px solid var(--border);
+        }
+
+        h2 { 
+            color: var(--text); 
+            margin-bottom: 5px; 
+            font-size: 1.6rem; 
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: #4a5568;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 110px;
+            padding: 12px;
+            border: 2px solid var(--success);
+            border-radius: 12px;
+            resize: none;
+            font-size: 15px;
+            margin-bottom: 20px;
+            background: #fdfdfd;
+            color: #2d3748;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        textarea:focus {
+            border-color: var(--primary);
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: 1fr; /* Cambiado a 1 columna ya que eliminamos el botón de descarga */
+            gap: 10px;
+        }
+
+        button {
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            color: white;
+            transition: all 0.2s ease;
+            font-size: 0.95rem;
+        }
+
+        #btn-gen { 
+            background: var(--primary); 
+        }
+        #btn-gen:hover { background: var(--primary-hover); transform: translateY(-1px); }
+
+        #btn-clear { 
+            background: var(--neutral); 
+            color: #fff;
+            display: none;
+        }
+        #btn-clear:hover { background: var(--neutral-hover); transform: translateY(-1px); }
+
+        #qr-wrapper {
+            margin-top: 20px;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 15px;
+            display: none;
+            border: 2px dashed var(--success);
+            width: 100%;
+        }
+
+        canvas { 
+            max-width: 100%; 
+            height: auto !important; 
+            border-radius: 8px;
+            display: block;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 480px) {
+            .container { padding: 1.5rem; }
+            h2 { font-size: 1.3rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Policlinica Familiar</h2>
+    <p class="subtitle">“Eficacia médica con calidez humana”</p>
+
+    <textarea id="data" placeholder="Escribe el texto, enlace o datos aquí..."></textarea>
+
+    <div class="buttons">
+        <button id="btn-gen" onclick="generarQR()">Generar</button>
+        <button id="btn-clear" onclick="limpiarTodo()">Limpiar</button>
+    </div>
+
+    <div id="qr-wrapper">
+        <canvas id="canvas"></canvas>
+    </div>
+</div>
+
+<script>
+    function generarQR() {
+        const val = document.getElementById('data').value.trim();
+        if(!val) return alert("Por favor escribe algo primero.");
+
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // 1. Generar QR
+        const qr = new QRious({
+            element: canvas,
+            value: val,
+            size: 1000,
+            level: 'H'
+        });
+
+        // 2. Cargar imagen local 'logo.png'
+        const img = new Image();
+        img.src = 'logo.png'; 
+        
+        img.onload = function() {
+            const logoSize = 220;
+            const x = (canvas.width - logoSize) / 2;
+            const y = (canvas.height - logoSize) / 2;
+            
+            ctx.save();
+            ctx.shadowColor = 'rgba(178, 38, 37, 0.2)';
+            ctx.shadowBlur = 15;
+            ctx.fillStyle = "white";
+            ctx.beginPath();
+            ctx.arc(canvas.width/2, canvas.height/2, logoSize / 1.6, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+            
+            ctx.drawImage(img, x, y, logoSize, logoSize);
+
+            document.getElementById('qr-wrapper').style.display = 'block';
+            document.getElementById('btn-clear').style.display = 'block';
+        };
+
+        img.onerror = function() {
+            alert("No se pudo encontrar el archivo 'logo.png'.");
+        };
+    }
+
+    function limpiarTodo() {
+        document.getElementById('data').value = "";
+        document.getElementById('qr-wrapper').style.display = 'none';
+        document.getElementById('btn-clear').style.display = 'none';
+    }
+</script>
+
+</body>
+</html>

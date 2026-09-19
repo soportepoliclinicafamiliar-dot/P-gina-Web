@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Especialidades | Policlínica Familiar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
+        :root {
+            --tiffany: #34B78F;
+            --blue-med: #008E9F;
+            --orange-corp: #F49020;
+        }
+
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+
+        /* ---------- Tarjeta ---------- */
+        .specialty-card {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            padding: 1.75rem;
+            background: #ffffff;
+            border: 1px solid #edf1f5;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            isolation: isolate;
+            text-decoration: none;
+            animation: fadeUp .6s cubic-bezier(.4, 0, .2, 1) both;
+            transition: transform .35s cubic-bezier(.4, 0, .2, 1),
+                        box-shadow .35s ease,
+                        border-color .35s ease;
+        }
+
+        /* Halo de color en la esquina superior derecha */
+        .specialty-card::before {
+            content: "";
+            position: absolute;
+            top: -55px;
+            right: -55px;
+            width: 190px;
+            height: 190px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--accent-soft) 0%, transparent 70%);
+            z-index: -1;
+            transition: transform .55s cubic-bezier(.4, 0, .2, 1), opacity .55s ease;
+        }
+
+        /* Barra inferior que aparece en hover */
+        .specialty-card::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 3px;
+            width: 100%;
+            background: linear-gradient(90deg, var(--accent) 0%, var(--accent) 55%, transparent 100%);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform .45s cubic-bezier(.4, 0, .2, 1);
+        }
+
+        .specialty-card:hover,
+        .specialty-card:focus-visible {
+            transform: translateY(-6px);
+            border-color: var(--accent);
+            box-shadow: 0 22px 40px -24px var(--accent),
+                        0 4px 14px -8px rgba(15, 23, 42, .08);
+            outline: none;
+        }
+
+        .specialty-card:hover::before { transform: scale(1.35); opacity: .85; }
+        .specialty-card:hover::after  { transform: scaleX(1); }
+
+        /* ---------- Ícono ---------- */
+        .icon-tile {
+            width: 58px;
+            height: 58px;
+            border-radius: 1rem;
+            overflow: hidden;
+            flex-shrink: 0;
+            background: #f1f5f9;
+            box-shadow: 0 0 0 5px var(--accent-soft);
+            transition: box-shadow .4s ease, transform .4s cubic-bezier(.4, 0, .2, 1);
+        }
+
+        .icon-tile img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .specialty-card:hover .icon-tile {
+            transform: scale(1.05) rotate(-3deg);
+            box-shadow: 0 0 0 7px var(--accent-soft);
+        }
+
+        /* ---------- Contenido ---------- */
+        .card-content { flex: 1; }
+
+        .card-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 1.05rem;
+            letter-spacing: -.015em;
+            color: #1e293b;
+            margin-bottom: .35rem;
+            transition: color .3s ease;
+        }
+
+        .specialty-card:hover .card-title { color: var(--accent); }
+
+        .card-desc {
+            font-size: .8rem;
+            line-height: 1.55;
+            color: #7c8798;
+        }
+
+        /* ---------- CTA ---------- */
+        .card-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: .45rem;
+            font-size: .72rem;
+            font-weight: 700;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+
+        .card-cta svg {
+            transition: transform .35s cubic-bezier(.4, 0, .2, 1);
+        }
+
+        .specialty-card:hover .card-cta svg { transform: translateX(5px); }
+
+        /* ---------- Animación de entrada ---------- */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .specialty-card:nth-child(1) { animation-delay: .02s; }
+        .specialty-card:nth-child(2) { animation-delay: .06s; }
+        .specialty-card:nth-child(3) { animation-delay: .10s; }
+        .specialty-card:nth-child(4) { animation-delay: .14s; }
+        .specialty-card:nth-child(5) { animation-delay: .18s; }
+        .specialty-card:nth-child(6) { animation-delay: .22s; }
+        .specialty-card:nth-child(7) { animation-delay: .26s; }
+        .specialty-card:nth-child(8) { animation-delay: .30s; }
+        .specialty-card:nth-child(9) { animation-delay: .34s; }
+
+        @media (prefers-reduced-motion: reduce) {
+            .specialty-card, .specialty-card::before, .specialty-card::after,
+            .icon-tile, .card-cta svg { animation: none !important; transition: none !important; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navegación Superior Inmóvil (Sticky) -->
+    <nav class="bg-white/90 backdrop-blur border-b border-slate-100 p-4 px-8 flex justify-between items-center shadow-sm sticky top-0 z-50">
+        <div class="flex items-center gap-3">
+            <img src="logo.png" alt="Logo" class="h-10">
+            <span class="font-bold text-slate-800 tracking-tighter text-lg">POLICLÍNICA FAMILIAR</span>
+        </div>
+        <div class="flex gap-6 text-sm font-semibold text-slate-600">
+            <a href="index.html" class="hover:text-emerald-600 transition-colors">Inicio</a>
+            <a href="especialidades.html" class="text-emerald-600 border-b-2 border-emerald-500 pb-1">Especialidades</a>
+            <a href="servicios.html" class="hover:text-emerald-600 transition-colors">Servicios</a>
+            <a href="contacto.html" class="hover:text-emerald-600 transition-colors">Contacto</a>
+        </div>
+    </nav>
+
+    <!-- Contenido Principal -->
+    <main class="max-w-6xl mx-auto p-8">
+
+        <!-- Encabezado de sección -->
+        <div class="mb-10">
+            <span class="inline-flex items-center gap-2 text-[11px] font-bold tracking-[0.14em] uppercase text-emerald-700 bg-emerald-50 border border-emerald-100 px-3 py-1.5 rounded-full">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                Catálogo médico
+            </span>
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-800 mt-4 tracking-tight">Especialidades Médicas</h1>
+            <p class="text-slate-500 text-sm mt-2 max-w-xl">
+                Seleccione una especialidad para ver su cartera de servicios detallada.
+            </p>
+        </div>
+
+        <!-- Grid Dinámico de las 9 Especialidades -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+            <!-- 1. Ginecología -->
+            <a href="ginecologia.html" class="specialty-card" style="--accent:#E2557F; --accent-soft:#FDEDF2;">
+                <div class="icon-tile"><img src="Imagen1.png" alt="Ginecología"></div>
+                <div class="card-content">
+                    <h3 class="card-title">Ginecología</h3>
+                    <p class="card-desc">Salud integral de la mujer, control preventivo y diagnóstico oportuno.</p>
+                </div>
+                <span class="card-cta">
+                    Ver servicios
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </span>
+            </a>
+
+            <!-- 2. Obstetricia -->
+            <a href="obstetricia.html" class="specialty-card" style="--accent:#F49020; --accent-soft:#FEF3E6;">
+                <div class="icon-tile"><img src="Imagen2.jpg" alt="Obstetricia"></div>
+                <div class="card-content">
+                    <h3 class="card-title">Obstetricia</h3>
+                    <p class="card-desc">Acompañamiento completo durante el embarazo, parto y puerperio.</p>
+                </div>
+                <span class="card-cta">
+                    Ver servicios
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </span>
+            </a>
+
+            <!-- 3. Pediatría -->
+            <a href="pediatria.html" class="specialty-card" style="--accent:#29A8C4; --accent-soft:#E8F6FA;">
+                <div class="icon-tile"><img src="Imagen3.png" alt="Pediatría"></div>
+                <div class="card-content">
+                    <h3 class="card-title">Pediatría</h3>
+                    <p class="card-desc">Control del crecimiento y desarrollo integral de niños y adolescentes.</p>
+                </div>
+                <span class="card-cta">
+                    Ver servicios
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </span>
+            </a>
+
+            <!-- 4. Medicina General -->
+            <a href="general.html" class="specialty-card" style="--accent:#34B78F; --accent-soft:#E9F8F2;">
+                <div class="icon-tile"><img src="Imagen4.png" alt="Medicina General"></div>
+                <div class="card-content">
+                    <h3 class="card-title">Medicina General</h3>
+                    <p class="card-desc">Atención primaria, diagnóstico inicial y prevención de enfermedades.</p>
+                </div>
+                <span class="card-cta">
+                    Ver servicios
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </span>
+            </a>
+
+            <!-- 5. Medicina Interna -->
+            <a href="interna.html" class="specialty-card" style="--accent:#008E9F; --accent-soft:#E5F4F6;">
+                <div class="icon-tile"><img src="Imagen5.png" alt="Medicina Interna"></div>
+                <div class="card-content">
+                    <h3 class="card-title">Medicina Interna</h3>
+                    <p class="card-desc">Manejo integral de enfermedades crónicas y del paciente adulto.</p>
+                </div>
+                <span class="card-cta">
+                    Ver servicios
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </span>
+            </a>
+
+            <!-- 6. Traumatología -->
+            <a href="traumatologia.html" class="specialty-card" style="--accent:#6C63E0; --accent-soft:#EEEDFB;">
+                <div class="icon-tile"><img src="Imagen6.png" alt="Traumatología"></div>
+                <div class="card-content">
+                    <h3 class="card-title">Traumatología</h3>
+                    <p class="card-desc">Diagnóstico y tratamiento de lesiones del sistema músculo-esquelético.</p>
+                </div>
+                <span class="card-cta">
+                    Ver servicios
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </span>
+            </a>
+
+            <!-- 7. Cirugía -->
+            <a href="cirugia.html" class="specialty-card" style="--accent:#E4574C; --accent-soft:#FCEDEB;">
+                <div class="icon-tile"><img src="Imagen7.png" alt="Cirugía"></div>
+                <div class="card-content">
+                    <h3 class="card-title">Cirugía</h3>
+                    <p class="card-desc">Procedimientos quirúrgicos con equipo especializado y seguimiento post-operatorio.</p>
+                </div>
+                <span class="card-cta">
+                    Ver servicios
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </span>
+            </a>
+
+            <!-- 8. Nutrición -->
+            <a href="nutricion.html" class="specialty-card" style="--accent:#74B33C; --accent-soft:#F1F8E9;">
+                <div class="icon-tile"><img src="Imagen8.jpg" alt="Nutrición"></div>
+                <div class="card-content">
+                    <h3 class="card-title">Nutrición</h3>
+                    <p class="card-desc">Planes alimentarios personalizados y seguimiento nutricional continuo.</p>
+                </div>
+                <span class="card-cta">
+                    Ver servicios
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </span>
+            </a>
+
+            <!-- 9. Psicología -->
+            <a href="psicologia.html" class="specialty-card" style="--accent:#9B6BD6; --accent-soft:#F4EDFB;">
+                <div class="icon-tile"><img src="Imagen9.jpg" alt="Psicología"></div>
+                <div class="card-content">
+                    <h3 class="card-title">Psicología</h3>
+                    <p class="card-desc">Apoyo emocional y salud mental para toda la familia.</p>
+                </div>
+                <span class="card-cta">
+                    Ver servicios
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </span>
+            </a>
+
+        </div>
+
+        <!-- Botones de Navegación Globales -->
+        <div class="mt-12 flex justify-between">
+            <a href="index.html" class="px-6 py-2.5 border border-slate-300 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 hover:border-slate-400 transition-all">← Atrás</a>
+            <a href="servicios.html" class="px-6 py-2.5 bg-slate-900 text-white rounded-xl text-sm font-bold hover:bg-emerald-600 transition-all shadow-sm">Servicios →</a>
+        </div>
+    </main>
+
+</body>
+</html>

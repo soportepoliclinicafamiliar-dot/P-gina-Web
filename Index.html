@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Policlínica Familiar | Portal Oficial</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --tiffany: #34B78F;
+            --tiffany-dark: #1F7A5E;
+            --tiffany-soft: #E9F8F2;
+            --blue-med: #008E9F;
+            --orange-corp: #F49020;
+        }
+
+        * { -webkit-tap-highlight-color: transparent; }
+
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        h1, h2, h3, h4 { font-family: 'Montserrat', sans-serif; }
+
+        /* ============ HERO ============ */
+        .hero {
+            position: relative;
+            overflow: hidden;
+            background:
+                radial-gradient(circle at 88% 15%, rgba(255,255,255,.16) 0%, transparent 55%),
+                radial-gradient(circle at 8% 92%, rgba(255,255,255,.10) 0%, transparent 50%),
+                linear-gradient(135deg, #1F7A5E 0%, var(--tiffany) 55%, #6FD9B6 100%);
+        }
+        .hero::after {
+            content: "";
+            position: absolute; inset: 0;
+            background-image: repeating-linear-gradient(45deg, rgba(255,255,255,.05) 0 1px, transparent 1px 16px);
+            opacity: .55; pointer-events: none;
+        }
+        .hero-content { position: relative; z-index: 2; }
+
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: .5rem;
+            background: rgba(255,255,255,.18);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,.3);
+            color: #fff; font-size: 10px; font-weight: 700;
+            letter-spacing: .16em; text-transform: uppercase;
+            padding: .45rem .9rem; border-radius: 999px;
+        }
+
+        .hero-chip {
+            display: inline-flex; align-items: center; gap: .45rem;
+            font-size: 11px; font-weight: 600; color: rgba(255,255,255,.95);
+            background: rgba(255,255,255,.14);
+            border: 1px solid rgba(255,255,255,.24);
+            padding: .4rem .8rem; border-radius: 999px;
+            backdrop-filter: blur(6px);
+        }
+
+        .hero-logo-wrap {
+            background: rgba(255,255,255,.16);
+            backdrop-filter: blur(12px);
+            border: 2px solid rgba(255,255,255,.4);
+            border-radius: 1.6rem;
+            padding: 1.2rem 1.4rem;
+            box-shadow: 0 22px 48px -22px rgba(0,0,0,.45);
+            transition: transform .5s cubic-bezier(.4,0,.2,1);
+        }
+        .hero-logo-wrap:hover { transform: translateY(-5px) rotate(-1deg); }
+
+        /* CTA principal del hero */
+        .btn-primary {
+            display: inline-flex; align-items: center; justify-content: center;
+            gap: .65rem;
+            padding: 1rem 1.6rem;
+            background: #0f172a;
+            color: #fff;
+            border-radius: 1rem;
+            font-size: .92rem; font-weight: 800;
+            letter-spacing: .04em; text-transform: uppercase;
+            text-decoration: none;
+            box-shadow: 0 14px 30px -14px rgba(15,23,42,.55);
+            transition: background .35s ease, transform .3s ease, gap .3s ease, box-shadow .35s ease;
+        }
+        .btn-primary:hover {
+            background: var(--tiffany);
+            gap: .9rem;
+            transform: translateY(-2px);
+            box-shadow: 0 20px 38px -16px var(--tiffany);
+        }
+        .btn-primary i { transition: transform .35s cubic-bezier(.4,0,.2,1); }
+        .btn-primary:hover i { transform: translateX(5px); }
+
+        .btn-ghost {
+            display: inline-flex; align-items: center; justify-content: center;
+            gap: .55rem;
+            padding: 1rem 1.5rem;
+            background: rgba(255,255,255,.16);
+            border: 1.5px solid rgba(255,255,255,.35);
+            color: #fff;
+            border-radius: 1rem;
+            font-size: .88rem; font-weight: 700;
+            text-decoration: none;
+            backdrop-filter: blur(6px);
+            transition: background .3s ease, transform .3s ease;
+        }
+        .btn-ghost:hover { background: rgba(255,255,255,.28); transform: translateY(-2px); }
+
+        /* ============ TARJETAS DE ACCESO RÁPIDO ============ */
+        .quick-card {
+            position: relative;
+            background: #ffffff;
+            border: 1px solid #eef1f5;
+            border-radius: 1.4rem;
+            padding: 1.5rem 1.4rem;
+            overflow: hidden;
+            isolation: isolate;
+            display: flex; flex-direction: column; gap: .85rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: transform .38s cubic-bezier(.4,0,.2,1),
+                        box-shadow .38s ease,
+                        border-color .38s ease;
+            animation: fadeUp .6s cubic-bezier(.4,0,.2,1) both;
+        }
+        .quick-card::before {
+            content: "";
+            position: absolute; top: -60px; right: -60px;
+            width: 180px; height: 180px; border-radius: 50%;
+            background: radial-gradient(circle, var(--qc-soft) 0%, transparent 70%);
+            z-index: -1;
+            transition: transform .6s cubic-bezier(.4,0,.2,1);
+        }
+        .quick-card::after {
+            content: "";
+            position: absolute; left: 0; bottom: 0;
+            height: 3px; width: 100%;
+            background: linear-gradient(90deg, var(--qc-accent) 0%, var(--qc-accent) 55%, transparent 100%);
+            transform: scaleX(0); transform-origin: left;
+            transition: transform .45s cubic-bezier(.4,0,.2,1);
+        }
+        .quick-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--qc-accent);
+            box-shadow: 0 24px 42px -26px var(--qc-accent),
+                        0 4px 14px -8px rgba(15,23,42,.08);
+        }
+        .quick-card:hover::before { transform: scale(1.35); }
+        .quick-card:hover::after  { transform: scaleX(1); }
+
+        .qc-icon {
+            width: 48px; height: 48px;
+            border-radius: 1rem;
+            display: flex; align-items: center; justify-content: center;
+            background: var(--qc-soft);
+            color: var(--qc-accent);
+            font-size: 1.15rem;
+            box-shadow: 0 0 0 4px var(--qc-soft);
+            transition: transform .4s cubic-bezier(.4,0,.2,1), box-shadow .4s ease;
+        }
+        .quick-card:hover .qc-icon {
+            transform: scale(1.08) rotate(-4deg);
+            box-shadow: 0 0 0 6px var(--qc-soft);
+        }
+        .qc-title {
+            font-weight: 800;
+            font-size: 1rem;
+            color: #1e293b;
+            letter-spacing: -.01em;
+            transition: color .3s ease;
+        }
+        .quick-card:hover .qc-title { color: var(--qc-accent); }
+        .qc-desc {
+            font-size: .8rem; line-height: 1.55; color: #7c8798;
+        }
+        .qc-cta {
+            display: inline-flex; align-items: center; gap: .5rem;
+            font-size: .72rem; font-weight: 700;
+            letter-spacing: .06em; text-transform: uppercase;
+            color: var(--qc-accent);
+            margin-top: auto;
+            padding-top: .75rem;
+            border-top: 1px dashed #e8edf3;
+        }
+        .qc-cta i { transition: transform .35s cubic-bezier(.4,0,.2,1); }
+        .quick-card:hover .qc-cta i { transform: translateX(6px); }
+
+        /* ============ HIGHLIGHTS / VALORES ============ */
+        .value-item {
+            display: flex; align-items: flex-start; gap: 1rem;
+            padding: 1.1rem 1.2rem;
+            background: #fff;
+            border: 1px solid #eef1f5;
+            border-radius: 1.1rem;
+            transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease;
+        }
+        .value-item:hover {
+            transform: translateY(-3px);
+            border-color: var(--tiffany);
+            box-shadow: 0 14px 26px -18px var(--tiffany);
+        }
+        .value-icon {
+            width: 42px; height: 42px; flex-shrink: 0;
+            border-radius: .85rem;
+            background: var(--tiffany-soft);
+            color: var(--tiffany-dark);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1rem;
+        }
+        .value-title {
+            font-weight: 700; font-size: .88rem;
+            color: #1e293b; margin-bottom: .15rem;
+        }
+        .value-desc {
+            font-size: .78rem; color: #7c8798; line-height: 1.5;
+        }
+
+        /* ============ FOOTER CTA ============ */
+        .footer-cta {
+            position: relative;
+            overflow: hidden;
+            background:
+                radial-gradient(circle at 85% 15%, rgba(52,183,143,.18) 0%, transparent 55%),
+                linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #fff;
+        }
+        .footer-cta::after {
+            content: "";
+            position: absolute; inset: 0;
+            background-image: repeating-linear-gradient(45deg, rgba(255,255,255,.04) 0 1px, transparent 1px 18px);
+            pointer-events: none;
+        }
+        .footer-cta-content { position: relative; z-index: 2; }
+
+        /* ============ ANIMACIONES ============ */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(18px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .quick-card:nth-child(1) { animation-delay: .05s; }
+        .quick-card:nth-child(2) { animation-delay: .12s; }
+        .quick-card:nth-child(3) { animation-delay: .19s; }
+        .quick-card:nth-child(4) { animation-delay: .26s; }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Navegación Superior Inmóvil (Sticky) -->
+    <nav class="bg-white/90 backdrop-blur border-b border-slate-100 p-4 px-8 flex justify-between items-center shadow-sm sticky top-0 z-50">
+        <div class="flex items-center gap-3">
+            <img src="logo.png" alt="Logo" class="h-10">
+            <span class="font-bold text-slate-800 tracking-tighter text-lg">POLICLÍNICA FAMILIAR</span>
+        </div>
+        <div class="hidden md:flex gap-6 text-sm font-semibold text-slate-600">
+            <a href="index.html" class="text-emerald-600 border-b-2 border-emerald-500 pb-1">Inicio</a>
+            <a href="especialidades.html" class="hover:text-emerald-600 transition-colors">Especialidades</a>
+            <a href="servicios.html" class="hover:text-emerald-600 transition-colors">Servicios</a>
+            <a href="contacto.html" class="hover:text-emerald-600 transition-colors">Contacto</a>
+        </div>
+    </nav>
+
+    <!-- Contenido Principal -->
+    <main class="flex-grow w-full">
+
+        <!-- HERO -->
+        <section class="hero py-14 lg:py-20 px-6 lg:px-10">
+            <div class="hero-content max-w-7xl mx-auto">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+
+                    <!-- Texto -->
+                    <div class="lg:col-span-7">
+                        <span class="hero-badge">
+                            <i class="fa-solid fa-hospital-user"></i>
+                            Portal Oficial
+                        </span>
+
+                        <h1 class="text-4xl lg:text-6xl font-extrabold text-white mt-5 leading-[1.05] tracking-tight">
+                            Bienvenido a <br>
+                            <span class="text-emerald-100">Policlínica Familiar</span>
+                        </h1>
+
+                        <p class="text-emerald-50/90 text-sm lg:text-base mt-5 leading-relaxed max-w-xl">
+                            Accede a nuestras especialidades médicas, conoce nuestros servicios y
+                            agenda tu consulta con el equipo que cuida de ti y de tu familia.
+                        </p>
+
+                        <p class="text-emerald-100/90 text-xs lg:text-sm mt-3 italic font-medium">
+                            "Eficacia médica con calidez humana"
+                        </p>
+
+                        <div class="flex flex-wrap gap-3 mt-8">
+                            <a href="especialidades.html" class="btn-primary">
+                                <i class="fa-solid fa-door-open"></i>
+                                Ingresar al Portal
+                            </a>
+                            <a href="contacto.html" class="btn-ghost">
+                                <i class="fa-solid fa-calendar-check"></i>
+                                Agendar cita
+                            </a>
+                        </div>
+
+                        <div class="flex flex-wrap gap-3 mt-8">
+                            <span class="hero-chip"><i class="fa-solid fa-user-doctor text-emerald-100"></i> Especialistas certificados</span>
+                            <span class="hero-chip"><i class="fa-solid fa-clock text-emerald-100"></i> Atención oportuna</span>
+                            <span class="hero-chip"><i class="fa-solid fa-shield-heart text-emerald-100"></i> Cuidado con calidez</span>
+                        </div>
+                    </div>
+
+                    <!-- Logo flotante -->
+                    <div class="lg:col-span-5 flex justify-center lg:justify-end">
+                        <div class="hero-logo-wrap">
+                            <img src="logo.png" alt="Logo Policlínica Familiar"
+                                 class="w-40 lg:w-56 h-auto rounded-xl">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ACCESOS RÁPIDOS -->
+        <section class="max-w-7xl mx-auto px-6 lg:px-10 -mt-10 lg:-mt-14 relative z-10">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+
+                <a href="especialidades.html" class="quick-card"
+                   style="--qc-accent:#34B78F; --qc-soft:#E9F8F2;">
+                    <div class="qc-icon"><i class="fa-solid fa-stethoscope"></i></div>
+                    <h3 class="qc-title">Especialidades</h3>
+                    <p class="qc-desc">Explora las 9 áreas médicas disponibles en nuestra clínica.</p>
+                    <span class="qc-cta">
+                        Ver especialidades
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </span>
+                </a>
+
+                <a href="servicios.html" class="quick-card"
+                   style="--qc-accent:#008E9F; --qc-soft:#E5F4F6;">
+                    <div class="qc-icon"><i class="fa-solid fa-notes-medical"></i></div>
+                    <h3 class="qc-title">Servicios</h3>
+                    <p class="qc-desc">Descubre todos los servicios clínicos que ofrecemos.</p>
+                    <span class="qc-cta">
+                        Ver servicios
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </span>
+                </a>
+
+                <a href="contacto.html" class="quick-card"
+                   style="--qc-accent:#F49020; --qc-soft:#FEF3E6;">
+                    <div class="qc-icon"><i class="fa-solid fa-address-book"></i></div>
+                    <h3 class="qc-title">Contacto</h3>
+                    <p class="qc-desc">Agenda tu cita o resuelve tus dudas con nuestro equipo.</p>
+                    <span class="qc-cta">
+                        Contactar ahora
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </span>
+                </a>
+
+                <a href="especialidades.html" class="quick-card"
+                   style="--qc-accent:#B22625; --qc-soft:#FCEDEB;">
+                    <div class="qc-icon"><i class="fa-solid fa-heart-pulse"></i></div>
+                    <h3 class="qc-title">Consulta médica</h3>
+                    <p class="qc-desc">Ingresa al portal y selecciona la especialidad que necesitas.</p>
+                    <span class="qc-cta">
+                        Iniciar consulta
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </span>
+                </a>
+
+            </div>
+        </section>
+
+        <!-- VALORES / POR QUÉ ELEGIRNOS -->
+        <section class="max-w-7xl mx-auto px-6 lg:px-10 py-16">
+            <div class="text-center max-w-2xl mx-auto mb-10">
+                <span class="inline-flex items-center gap-2 text-[11px] font-bold tracking-[0.14em] uppercase text-emerald-700 bg-emerald-50 border border-emerald-100 px-3 py-1.5 rounded-full">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                    Nuestro compromiso
+                </span>
+                <h2 class="text-2xl lg:text-3xl font-extrabold text-slate-800 mt-4 tracking-tight">
+                    ¿Por qué elegir Policlínica Familiar?
+                </h2>
+                <p class="text-slate-500 text-sm mt-3">
+                    Combinamos tecnología, experiencia médica y calidez humana para el bienestar de toda la familia.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                <div class="value-item">
+                    <div class="value-icon"><i class="fa-solid fa-user-doctor"></i></div>
+                    <div>
+                        <h3 class="value-title">Equipo especializado</h3>
+                        <p class="value-desc">Médicos certificados en cada una de nuestras áreas clínicas.</p>
+                    </div>
+                </div>
+
+                <div class="value-item">
+                    <div class="value-icon"><i class="fa-solid fa-microscope"></i></div>
+                    <div>
+                        <h3 class="value-title">Diagnóstico oportuno</h3>
+                        <p class="value-desc">Tecnología y estudios que permiten una atención precisa y rápida.</p>
+                    </div>
+                </div>
+
+                <div class="value-item">
+                    <div class="value-icon"><i class="fa-solid fa-hand-holding-heart"></i></div>
+                    <div>
+                        <h3 class="value-title">Atención con calidez</h3>
+                        <p class="value-desc">Trato humano y cercano para cada paciente y su familia.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA FINAL -->
+        <section class="px-6 lg:px-10 pb-16">
+            <div class="max-w-7xl mx-auto footer-cta rounded-3xl p-8 lg:p-12">
+                <div class="footer-cta-content flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+                    <div class="max-w-2xl">
+                        <h2 class="text-2xl lg:text-3xl font-extrabold leading-tight">
+                            Tu salud merece la mejor atención
+                        </h2>
+                        <p class="text-slate-300 text-sm lg:text-base mt-3 leading-relaxed">
+                            Ingresa al portal y conoce todas las especialidades y servicios que tenemos
+                            para ti y tu familia.
+                        </p>
+                    </div>
+                    <a href="especialidades.html" class="btn-primary" style="background:#34B78F; box-shadow:0 18px 34px -14px rgba(52,183,143,.6);">
+                        <i class="fa-solid fa-door-open"></i>
+                        Ingresar al Portal
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="p-6 text-center border-t bg-white">
+        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-relaxed">
+            © 2026 Policlínica Familiar · 2da. Avenida "A" 10-60, Zona 3,<br class="sm:hidden">
+            Barrio Indeca, Santa Elena, Flores, Petén
+        </p>
+    </footer>
+
+</body>
+</html>
